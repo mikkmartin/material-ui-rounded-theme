@@ -54,16 +54,6 @@ const StyledItem = styled(MenuItem)`
   width: 100%;
   justify-content: space-between;
   transition: 0s;
-  /*
-  &.Mui-selected {
-    background: #eaf3fc77;
-    color: #005fff;
-  }
-  &.Mui-focusVisible {
-    background: #005fff;
-    color: white;
-  }
-  */
 `;
 
 const StyledFormControl = styled(FormControl)``;
@@ -107,19 +97,18 @@ const GlobalStyles = createGlobalStyle`
     background: rgba(220, 220, 220, 0.3);
     border-radius: 12px;
     backdrop-filter: blur(40px);
-    transform-origin: unset !important;
     margin-left: 2px;
     box-shadow: 0 10px 60px -5px rgba(0,0,0,0.2), inset 0 0 0 1px rgba(255,255,255,0.21);
   }
 `;
 
-export function Select() {
-  const [age, setAge] = React.useState("");
+type Value = number | string;
+type SelectProps = {
+  value?: Value;
+  onChange?: (ev: any) => void;
+};
 
-  const handleChange = (event: any) => {
-    setAge(event.target.value);
-  };
-
+export const Select: FC<SelectProps> = ({ children, value, onChange }) => {
   return (
     <div className="App">
       <h1>Hello</h1>
@@ -127,24 +116,25 @@ export function Select() {
         <StyledFormControl fullWidth>
           <GlobalStyles />
           <MuiSelect
-            value={age}
-            onChange={handleChange}
+            value={value}
+            onChange={onChange}
             displayEmpty
             IconComponent={(props) => <Chevron {...props} />}
             input={<StyledInput />}
           >
-            <StyledItem value="" disabled>
-              Select shipping...
-            </StyledItem>
-            <StyledItem value={10}>
-              <span>Smart post postiautomaat </span>
-              <span>3.99€</span>
-            </StyledItem>
-            <StyledItem value={20}>Twenty</StyledItem>
-            <StyledItem value={30}>Thirty</StyledItem>
+            {children}
           </MuiSelect>
         </StyledFormControl>
       </StylesProvider>
     </div>
   );
-}
+};
+
+type OptionProps = {
+  value?: Value;
+  disabled?: boolean;
+};
+
+export const Option: FC<OptionProps> = ({ children, ...props }) => {
+  return <StyledItem {...props}>{children}</StyledItem>;
+};
