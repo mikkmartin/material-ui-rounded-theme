@@ -1,15 +1,23 @@
 import * as React from "react";
 import "./styles.css";
 import { Select, Option } from "../components/Select";
+import { options, pickupLocations } from "./data";
+import { ThemeProvider } from "styled-components";
 
-export default function App() {
-  const [value, setValue] = React.useState("");
+const Inputs = () => {
+  const [shipping, setShipping] = React.useState("");
+  const [pickup, setPickup] = React.useState("");
+  const [amount, setAmount] = React.useState(1);
 
   return (
-    <div className="App">
-      <Select value={value} onChange={(ev) => setValue(ev.target.value)}>
+    <>
+      <Select
+        fullWidth
+        value={shipping}
+        onChange={(ev) => setShipping(ev.target.value)}
+      >
         <Option disabled value="">
-          Select shipping...
+          Select delivery...
         </Option>
         {options.map(({ name, price }, i) => (
           <Option key={i} value={i}>
@@ -18,17 +26,49 @@ export default function App() {
           </Option>
         ))}
       </Select>
+      {!!shipping && (
+        <Select
+          fullWidth
+          value={pickup}
+          onChange={(ev) => setPickup(ev.target.value)}
+        >
+          <Option disabled value="">
+            Select pickup location...
+          </Option>
+          {pickupLocations.map((name, i) => (
+            <Option key={i} value={i}>
+              {name}
+            </Option>
+          ))}
+        </Select>
+      )}
+      {amount !== 0 && (
+        <Select value={amount} onChange={(ev) => setAmount(ev.target.value)}>
+          <Option value={0}>remove</Option>
+          {options.map(({ name, price }, i) => (
+            <Option key={i} value={i + 1}>
+              {i + 1}
+            </Option>
+          ))}
+        </Select>
+      )}
+    </>
+  );
+};
+
+export default function App() {
+  return (
+    <div className="App">
+      <div>
+        <h1>Light</h1>
+        <Inputs />
+      </div>
+      <ThemeProvider theme={{ dark: true }}>
+        <div className="dark">
+          <h1>Dark</h1>
+          <Inputs />
+        </div>
+      </ThemeProvider>
     </div>
   );
 }
-
-const options = [
-  { name: "Tähitud postiga", price: "€2.95" },
-  { name: "Omniva pakiautomaat (Eesti)", price: "€2.95" },
-  { name: "Järele tulemisega", price: "€0" },
-  { name: "International", price: "€12" },
-  { name: "European", price: "€8" },
-  { name: "Itella pakiautomaat (Soome)", price: "€8" },
-  { name: "Omniva pakiautomaat (Läti)", price: "€8" },
-  { name: "Omniva pakiautomaat (Leedu)", price: "€8" }
-];

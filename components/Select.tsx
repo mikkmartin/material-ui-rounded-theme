@@ -7,6 +7,57 @@ import FormControl from "@material-ui/core/FormControl";
 import InputBase from "@material-ui/core/InputBase";
 import styled, { createGlobalStyle } from "styled-components";
 
+type Value = number | string;
+type SelectProps = {
+  value?: Value;
+  onChange?: (ev: any) => void;
+  fullWidth?: boolean;
+};
+
+export const Select: FC<SelectProps> = ({
+  children,
+  value,
+  onChange,
+  fullWidth
+}) => {
+  return (
+    <StylesProvider injectFirst>
+      <StyledFormControl fullWidth={fullWidth}>
+        <GlobalStyles />
+        <MuiSelect
+          value={value}
+          onChange={onChange}
+          displayEmpty
+          IconComponent={(props) => <Chevron {...props} />}
+          input={<StyledInput />}
+          MenuProps={{
+            anchorOrigin: {
+              vertical: "top",
+              horizontal: "center"
+            },
+            transformOrigin: {
+              vertical: "top",
+              horizontal: "center"
+            },
+            anchorReference: "anchorEl"
+          }}
+        >
+          {children}
+        </MuiSelect>
+      </StyledFormControl>
+    </StylesProvider>
+  );
+};
+
+type OptionProps = {
+  value?: Value;
+  disabled?: boolean;
+};
+
+export const Option: FC<OptionProps> = ({ children, ...props }) => {
+  return <StyledItem {...props}>{children}</StyledItem>;
+};
+
 const StyledInput = styled(InputBase)`
   .MuiSelect-root {
     font-family: "Manrope";
@@ -27,6 +78,7 @@ const StyledInput = styled(InputBase)`
       text-overflow: ellipsis;
       overflow: hidden;
       flex-shrink: 1;
+      line-height: 100%;
       &:last-child {
         flex-shrink: 0;
       }
@@ -97,44 +149,6 @@ const GlobalStyles = createGlobalStyle`
     background: rgba(220, 220, 220, 0.3);
     border-radius: 12px;
     backdrop-filter: blur(40px);
-    margin-left: 2px;
     box-shadow: 0 10px 60px -5px rgba(0,0,0,0.2), inset 0 0 0 1px rgba(255,255,255,0.21);
   }
 `;
-
-type Value = number | string;
-type SelectProps = {
-  value?: Value;
-  onChange?: (ev: any) => void;
-};
-
-export const Select: FC<SelectProps> = ({ children, value, onChange }) => {
-  return (
-    <div className="App">
-      <h1>Hello</h1>
-      <StylesProvider injectFirst>
-        <StyledFormControl fullWidth>
-          <GlobalStyles />
-          <MuiSelect
-            value={value}
-            onChange={onChange}
-            displayEmpty
-            IconComponent={(props) => <Chevron {...props} />}
-            input={<StyledInput />}
-          >
-            {children}
-          </MuiSelect>
-        </StyledFormControl>
-      </StylesProvider>
-    </div>
-  );
-};
-
-type OptionProps = {
-  value?: Value;
-  disabled?: boolean;
-};
-
-export const Option: FC<OptionProps> = ({ children, ...props }) => {
-  return <StyledItem {...props}>{children}</StyledItem>;
-};

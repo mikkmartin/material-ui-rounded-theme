@@ -1,11 +1,23 @@
 body {
   font-family: sans-serif;
-  text-align: center;
   background: #f5f5f5;
-  min-height: 200vh;
+  margin: 0;
 }
 
 .App {
-  width: 320px;
   margin: auto;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+.App > * {
+  padding: 32px;
+  min-height: 50vh;
+}
+
+.dark {
+  background: #222;
+  color: white;
+  padding: 32px;
+  width: 100%;
 }
