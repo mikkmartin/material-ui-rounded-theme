@@ -118,6 +118,9 @@ const StyledItem = styled(MenuItem)`
   width: 100%;
   justify-content: space-between;
   transition: 0s;
+  :hover {
+    background: rgba(255, 255, 255, 0.15);
+  }
 `;
 
 export const Option: FC<OptionProps> = ({ children, ...props }) => {
