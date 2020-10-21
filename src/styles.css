@@ -20,8 +20,7 @@ body {
 }
 
 .dark {
-  background: #222;
+  background: black;
   color: white;
   padding: 32px;
-  width: 100%;
 }
